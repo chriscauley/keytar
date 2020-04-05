@@ -15,6 +15,11 @@ const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
 const config = getConfig({ keyboard: 'colemak' })
 
+const _chain = (f1, f2) => a => {
+  f1(a)
+  f2(a)
+}
+
 const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
   const renderNoteLabel = ({ midiNumber }) => (
     <div className="ReactPiano__NoteLabel ReactPiano__NoteLabel--natural">
@@ -23,15 +28,6 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
   )
   const width = 600
   const height = 170
-  const _play = (callback) => (a) => {
-    keyDown(a)
-    callback(a)
-  }
-  const _stop = (callback) => (a) => {
-    keyUp(a)
-    callback(a)
-  }
-
   return (
     <div style={{ width, height }}>
       <SoundfontProvider
@@ -44,8 +40,8 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
               first: config.firstNote,
               last: config.lastNote,
             }}
-            playNote={_play(playNote)}
-            stopNote={_stop(stopNote)}
+            playNote={_chain(keyDown, playNote)}
+            stopNote={_chain(keyUp, stopNote)}
             disabled={isLoading}
             width={width}
             keyboardShortcuts={config.keyboardShortcuts}
@@ -107,7 +103,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props.sheet)
     return (
       <div className="App">
         <select onChange={this.handleChange}>
