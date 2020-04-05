@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { debounce } from 'lodash'
 import { OpenSheetMusicDisplay as OSMD } from 'opensheetmusicdisplay';
+import { pitchToMidiNumber } from './utils'
+import withSheet from './withSheet'
 
 class OpenSheetMusicDisplay extends Component {
     constructor(props) {
@@ -8,7 +11,6 @@ class OpenSheetMusicDisplay extends Component {
       this.osmd = undefined;
       this.divRef = React.createRef();
     }
-  
     setupOsmd() {
       const options = {
         autoResize: this.props.autoResize ? this.props.autoResize : true,
@@ -17,29 +19,25 @@ class OpenSheetMusicDisplay extends Component {
         disableCursor: false,
       }
       this.osmd = new OSMD(this.divRef.current, options);
-      this.osmd.load(this.props.file).then(() => {
-        this.osmd.render()
-        this.osmd.cursor.show()
+      this.osmd.load(this.props.file).then((...args) => {
+        const { setCursor=() => {} } = this.props
+        this.props.sheet.set(this.osmd)
+        const getNotes = () => this.osmd.cursor.NotesUnderCursor().map(n => n.pitch).filter(Boolean)
+        setCursor(this.osmd.cursor, getNotes)
       });
-      
       window.OSMD = this
     }
-  
-    resize() {
-      this.forceUpdate();
-    }
-  
+
     componentWillUnmount() {
       window.removeEventListener('resize', this.resize)
     }
   
     componentDidUpdate(prevProps) {
-      if (this.props.drawTitle !== prevProps.drawTitle) {
+      if (!this.osmd) {
         this.setupOsmd();
-      } else {
+      } else if (this.props.file !== prevProps.file) {
         this.osmd.load(this.props.file).then(() => this.osmd.render());
       }
-      window.addEventListener('resize', this.resize)
     }
   
     // Called after render
@@ -47,9 +45,9 @@ class OpenSheetMusicDisplay extends Component {
       this.setupOsmd();
     }
   
-    render() {
+  render() {
       return (<div ref={this.divRef} />);
     }
   }
 
-  export default OpenSheetMusicDisplay;
+export default withSheet(OpenSheetMusicDisplay)
