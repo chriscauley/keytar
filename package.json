@@ -7,7 +7,7 @@
     "build/server": "./bin/build-static; yarn parcel build server.js --target node",
     "lint": "yarn eslint src/ __tests__/",
     "serve": "node dist/server.js",
-    "watch": "yarn parcel index.html"
+    "watch": "yarn parcel src/index.html"
   },
   "dependencies": {
     "@babel/core": "^7.9.0",

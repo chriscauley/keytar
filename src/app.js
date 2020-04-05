@@ -1,33 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano'
+import { Piano, MidiNumbers } from 'react-piano'
 import 'react-piano/dist/styles.css'
 import OSMD from './OpenSheetMusicDisplay'
-import SoundfontProvider from './vendor/SoundfontProvider'
+import SoundfontProvider from '../vendor/SoundfontProvider'
 
 const musicfiles = require('./musicxml.json')
 import { pitchToMidiNumber, checkNotes } from './utils'
+import getConfig from './config'
+import withSheet from './withSheet'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
-const colemak_top = 'qwfpgjluy;[]'
-const colemak_mid = "arstdhneio'"
-
-const colemak_config = colemak_mid.split('').map((key, i) => ({
-  natural: key,
-  flat: colemak_top[i],
-  sharp: colemak_top[i + 1],
-}))
-
-const firstNote = MidiNumbers.fromNote('c1')
-const lastNote = firstNote + 17
-const keyboardShortcuts = KeyboardShortcuts.create({
-  firstNote: firstNote,
-  lastNote: lastNote,
-  keyboardConfig: colemak_config,
-  // keyboardConfig: KeyboardShortcuts.HOME_ROW,
-})
+const config = getConfig({ keyboard: 'colemak' })
 
 const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
   const renderNoteLabel = ({ midiNumber }) => (
@@ -54,12 +40,15 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
         hostname={soundfontHostname}
         render={({ isLoading, playNote, stopNote }) => (
           <Piano
-            noteRange={{ first: firstNote, last: lastNote }}
+            noteRange={{
+              first: config.firstNote,
+              last: config.lastNote,
+            }}
             playNote={_play(playNote)}
             stopNote={_stop(stopNote)}
             disabled={isLoading}
             width={width}
-            keyboardShortcuts={keyboardShortcuts}
+            keyboardShortcuts={config.keyboardShortcuts}
             renderNoteLabel={renderNoteLabel}
             activeNotes={activeNotes}
           />
@@ -118,6 +107,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.props.sheet)
     return (
       <div className="App">
         <select onChange={this.handleChange}>
@@ -140,6 +130,8 @@ class App extends React.Component {
     )
   }
 }
+
+App = withSheet(App)
 
 const domContainer = document.querySelector('#react-app')
 ReactDOM.render(<App />, domContainer)
