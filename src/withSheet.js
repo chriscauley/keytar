@@ -6,13 +6,17 @@ const _globals = {}
 
 const actions = {
   set: (store, sheet) => {
-    setTimeout( () => {
+    setTimeout(() => {
       _globals.sheet = sheet
       const { cursor } = sheet
       const notes = []
-      for (var i=0;i<3; i++) {
+      for (let i = 0; i < 3; i++) {
         notes.push(
-          cursor.NotesUnderCursor().map(n => n.pitch).filter(Boolean).map(pitchToMidiNumber)
+          cursor
+            .NotesUnderCursor()
+            .map((n) => n.pitch)
+            .filter(Boolean)
+            .map(pitchToMidiNumber),
         )
         cursor.next()
         if (cursor.iterator.endReached) {
@@ -27,19 +31,18 @@ const actions = {
   },
 }
 
+const makeHook = globalHook(React, {}, actions)
 
-const makeHook = globalHook(React, { }, actions)
-
-export default (Component, {propName='sheet'}={}) => props => {
+export default (Component, { propName = 'sheet' } = {}) => (props) => {
   propName = propName || 'sheet'
   const [state, actions] = makeHook()
-  props= {
+  props = {
     ...props,
     [propName]: {
       ...state,
       ...actions,
       ..._globals,
-    }
+    },
   }
   return <Component {...props} />
 }

@@ -1,39 +1,32 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
-import 'react-piano/dist/styles.css';
+import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano'
+import 'react-piano/dist/styles.css'
 import OSMD from './OpenSheetMusicDisplay'
-import SoundfontProvider from './vendor/SoundfontProvider';
+import SoundfontProvider from './vendor/SoundfontProvider'
 
 const musicfiles = require('./musicxml.json')
 import { pitchToMidiNumber, checkNotes } from './utils'
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
 const colemak_top = 'qwfpgjluy;[]'
-const colemak_mid = 'arstdhneio\''
+const colemak_mid = "arstdhneio'"
 
 const colemak_config = colemak_mid.split('').map((key, i) => ({
   natural: key,
   flat: colemak_top[i],
-  sharp: colemak_top[i+1],
+  sharp: colemak_top[i + 1],
 }))
 
-const firstNote = MidiNumbers.fromNote('c1');
-const lastNote = firstNote + 17;
+const firstNote = MidiNumbers.fromNote('c1')
+const lastNote = firstNote + 17
 const keyboardShortcuts = KeyboardShortcuts.create({
   firstNote: firstNote,
   lastNote: lastNote,
   keyboardConfig: colemak_config,
   // keyboardConfig: KeyboardShortcuts.HOME_ROW,
-});
-
-const DOWN = {}
-const noteTracker = ((playNote, stopNote) => {
-  return {
-    play: (args) => playNote()
-  }
 })
 
 const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
@@ -44,17 +37,17 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
   )
   const width = 600
   const height = 170
-  const _play = callback => a => {
+  const _play = (callback) => (a) => {
     keyDown(a)
     callback(a)
   }
-  const _stop = callback => a => {
+  const _stop = (callback) => (a) => {
     keyUp(a)
     callback(a)
   }
 
   return (
-    <div style={{width, height}}>
+    <div style={{ width, height }}>
       <SoundfontProvider
         instrumentName="acoustic_grand_piano"
         audioContext={audioContext}
@@ -78,19 +71,19 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     // Don't call this.setState() here!
-    this.state = { file: musicfiles[1], pressedNotes: {} };
+    this.state = { file: musicfiles[1], pressedNotes: {} }
   }
 
-  handleChange = event => {
-    const file = event.target.value;
-    this.setState({ file });
+  handleChange = (event) => {
+    const file = event.target.value
+    this.setState({ file })
   }
 
   setCursor = (cursor, getCursorNotes) => {
     this.osmd_cursor = cursor
-    this.getCursorNotes = getCursorNotes;
+    this.getCursorNotes = getCursorNotes
     // [35, 34, 33, 34].forEach( (activeNotes, i) => {
     //   if (! Array.isArray(activeNotes)) {
     //     activeNotes = [activeNotes]
@@ -100,21 +93,25 @@ class App extends React.Component {
     // })
   }
 
-  keyDown = note => {
+  keyDown = (note) => {
     const { pressedNotes } = this.state
-    pressedNotes[note] = true;
-    const targetedNotes = this.getCursorNotes().map(pitchToMidiNumber).filter(n => n > 30)
+    pressedNotes[note] = true
+    const targetedNotes = this.getCursorNotes()
+      .map(pitchToMidiNumber)
+      .filter((n) => n > 30)
     if (checkNotes(pressedNotes, targetedNotes)) {
       this.osmd_cursor.next()
     }
     this.setState({ pressedNotes })
   }
 
-  keyUp = note => {
+  keyUp = (note) => {
     const { pressedNotes } = this.state
     delete pressedNotes[note]
     this.setState({ pressedNotes })
-    const targetedNotes = this.getCursorNotes().map(pitchToMidiNumber).filter(n => n > 30)
+    const targetedNotes = this.getCursorNotes()
+      .map(pitchToMidiNumber)
+      .filter((n) => n > 30)
     if (!targetedNotes.length) {
       this.osmd_cursor.next()
     }
@@ -124,16 +121,25 @@ class App extends React.Component {
     return (
       <div className="App">
         <select onChange={this.handleChange}>
-          {musicfiles.map( f => (
-            <option value={f} key={f}>{f}</option>
+          {musicfiles.map((f) => (
+            <option value={f} key={f}>
+              {f}
+            </option>
           ))}
         </select>
-        <MyPiano keyDown={this.keyDown} keyUp={this.keyUp} activeNotes={this.state.activeNotes} />
-        <OSMD file={"./musicxml/"+this.state.file} setCursor={this.setCursor}/>
+        <MyPiano
+          keyDown={this.keyDown}
+          keyUp={this.keyUp}
+          activeNotes={this.state.activeNotes}
+        />
+        <OSMD
+          file={'./musicxml/' + this.state.file}
+          setCursor={this.setCursor}
+        />
       </div>
-    );
+    )
   }
 }
 
-const domContainer = document.querySelector('#react-app');
-ReactDOM.render(<App/>, domContainer);
+const domContainer = document.querySelector('#react-app')
+ReactDOM.render(<App />, domContainer)

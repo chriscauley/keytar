@@ -6,13 +6,14 @@ const REVERSE_ACCIDENTAL = [1, -1, 0, 0, 2, -2, 3, -3, 4, -4]
 
 // see NoteEnum in opensheetumusicdisplay/src/Common/DataObjects/Pitch.ts
 
-const midiNumberToString = number => MidiNumbers.getAttributes(number).note
-const midiNumberToPitch = number => {
-  const octave = Math.floor(number / 12)
-}
+const midiNumberToString = (number) => MidiNumbers.getAttributes(number).note
 
-const pitchToString = ({fundamentalNote, accidental, octave}) => {
-  return Pitch.getNoteEnumString(fundamentalNote) + (Pitch.accidentalVexflow(accidental)||"") + octave
+const pitchToString = ({ fundamentalNote, accidental, octave }) => {
+  return (
+    Pitch.getNoteEnumString(fundamentalNote) +
+    (Pitch.accidentalVexflow(accidental) || '') +
+    octave
+  )
 }
 
 export const offsets = {
@@ -23,12 +24,17 @@ export const offsets = {
 
 window.NOTE_LIB = {}
 
-export const pitchToMidiNumber = pitch => {
-  return pitch.fundamentalNote + REVERSE_ACCIDENTAL[pitch.accidental] + pitch.octave*12 + offsets.get()
+export const pitchToMidiNumber = (pitch) => {
+  return (
+    pitch.fundamentalNote +
+    REVERSE_ACCIDENTAL[pitch.accidental] +
+    pitch.octave * 12 +
+    offsets.get()
+  )
 }
 
 export const checkNotes = (pressedNotes, targetedNotes) => {
-  const missing = !! targetedNotes.find(n => !pressedNotes[n])
+  const missing = !!targetedNotes.find((n) => !pressedNotes[n])
   return !missing && targetedNotes.length === Object.keys(pressedNotes).length
 }
 
@@ -39,5 +45,5 @@ export default {
   },
   midiNumber: {
     toString: midiNumberToString,
-  }
+  },
 }

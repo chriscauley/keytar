@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build/server": "./bin/build-static; yarn parcel build server.js --target node",
+    "lint": "yarn eslint src/ __tests__/",
     "serve": "node dist/server.js",
     "watch": "yarn parcel index.html"
   },
@@ -13,6 +14,7 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
+    "eslint-plugin-react": "^7.19.0",
     "express": "^4.17.1",
     "opensheetmusicdisplay": "^0.7.3",
     "parcel": "^1.12.4",
@@ -23,8 +25,13 @@
     "soundfont-player": "^0.12.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
     "jest": "^25.2.7",
+    "prettier": "^2.0.3",
     "test": "^0.6.0"
   }
 }
