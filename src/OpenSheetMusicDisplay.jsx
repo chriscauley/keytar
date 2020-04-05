@@ -19,17 +19,7 @@ class OpenSheetMusicDisplay extends Component {
       disableCursor: false,
     }
     this.osmd = new OSMD(this.divRef.current, options);
-    this.osmd.load(this.props.file).then((...args) => {
-      const { setCursor=() => {} } = this.props
-      this.props.sheet.set(this.osmd)
-      const getNotes = () => this.osmd.cursor.NotesUnderCursor().map(n => n.pitch).filter(Boolean)
-      setCursor(this.osmd.cursor, getNotes)
-    });
-    window.OSMD = this
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resize)
+    this.osmd.load(this.props.file).then(() => this.props.sheet.set(this.osmd))
   }
 
   componentDidUpdate(prevProps) {
