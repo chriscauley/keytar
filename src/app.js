@@ -5,7 +5,7 @@ import 'react-piano/dist/styles.css';
 import OSMD from './OpenSheetMusicDisplay'
 import SoundfontProvider from './vendor/SoundfontProvider';
 
-const musicfiles = require('./dist/musicxml.json')
+const musicfiles = require('./musicxml.json')
 import { pitchToMidiNumber, checkNotes } from './utils'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
