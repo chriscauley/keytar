@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+var fs = require('fs')
+
+const musicdir = 'musicxml'
+const manifest = './dist/musicxml.json'
+
+const files = fs.readdirSync(musicdir);
+console.log(files)
+fs.writeFileSync(manifest, JSON.stringify(files))

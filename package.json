@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build/server": "yarn parcel build server.js --target node",
-    "serve": "node dist/server.js"
+    "build/server": "./bin/build-static; yarn parcel build server.js --target node",
+    "serve": "node dist/server.js",
+    "watch": "yarn parcel index.html"
   },
   "dependencies": {
     "@babel/core": "^7.9.0",

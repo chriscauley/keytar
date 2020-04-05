@@ -5,6 +5,7 @@ import 'react-piano/dist/styles.css';
 import OSMD from './OpenSheetMusicDisplay'
 import SoundfontProvider from './vendor/SoundfontProvider';
 
+const musicfiles = require('./dist/musicxml.json')
 import { pitchToMidiNumber, checkNotes } from './utils'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -75,17 +76,11 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
   )
 }
 
-const files = [
-  "WA_Mozart_Marche_Turque_Turkish_March_fingered.mxl",
-  "MuzioClementi_SonatinaOpus36No1_Part2.xml",
-  "Beethoven_AnDieFerneGeliebte.xml"
-]
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
-    this.state = { file: files[0], pressedNotes: {} };
+    this.state = { file: musicfiles[1], pressedNotes: {} };
   }
 
   handleChange = event => {
@@ -129,7 +124,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <select onChange={this.handleChange}>
-          {files.map( f => (
+          {musicfiles.map( f => (
             <option value={f} key={f}>{f}</option>
           ))}
         </select>
