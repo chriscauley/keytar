@@ -7,20 +7,21 @@ import SoundfontProvider from '../vendor/SoundfontProvider'
 
 const musicfiles = require('./musicxml.json')
 import { pitchToMidiNumber, checkNotes } from './utils'
-import getConfig from './config'
 import withSheet from './withSheet'
+import { withConfig } from './config'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
 
-const config = getConfig({ keyboard: 'colemak' })
 
 const _chain = (f1, f2) => (a) => {
   f1(a)
   f2(a)
 }
 
-const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
+const MyPiano = withConfig(props => {
+  const { keyUp, keyDown, activeNotes, config } = props
+  const { firstNote, lastNote, keyboardShortcuts } = config
   const renderNoteLabel = ({ midiNumber }) => (
     <div className="ReactPiano__NoteLabel ReactPiano__NoteLabel--natural">
       {MidiNumbers.getAttributes(midiNumber).note}
@@ -37,14 +38,14 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
         render={({ isLoading, playNote, stopNote }) => (
           <Piano
             noteRange={{
-              first: config.firstNote,
-              last: config.lastNote,
+              first: firstNote,
+              last: lastNote,
             }}
             playNote={_chain(keyDown, playNote)}
             stopNote={_chain(keyUp, stopNote)}
             disabled={isLoading}
             width={width}
-            keyboardShortcuts={config.keyboardShortcuts}
+            keyboardShortcuts={keyboardShortcuts}
             renderNoteLabel={renderNoteLabel}
             activeNotes={activeNotes}
           />
@@ -52,7 +53,7 @@ const MyPiano = ({ keyUp, keyDown, activeNotes }) => {
       />
     </div>
   )
-}
+})
 
 class BaseApp extends React.Component {
   constructor(props) {
@@ -94,7 +95,7 @@ class BaseApp extends React.Component {
   render() {
     return (
       <div className="App">
-        <select onChange={this.handleChange}>
+        <select onChange={this.handleChange} value={this.state.file}>
           {musicfiles.map((f) => (
             <option value={f} key={f}>
               {f}

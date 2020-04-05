@@ -43,7 +43,6 @@ const actions = {
 const makeHook = globalHook(React, { loaded: false }, actions)
 
 export default (Component, { propName = 'sheet' } = {}) => (props) => {
-  propName = propName || 'sheet'
   const [state, actions] = makeHook()
   props = {
     ...props,
