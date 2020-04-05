@@ -24,7 +24,7 @@ const actions = {
       cursor.show()
       return notes
     }, 0)
-  }
+  },
 }
 
 
