@@ -2,20 +2,15 @@ import globalHook from '../vendor/use-global-hook'
 import React from 'react'
 import { KeyboardShortcuts, MidiNumbers } from 'react-piano'
 
-
-export default ({ keyboard, noteCount = 17, fromNote = 'c1' } = {}) => {
-  return { firstNote, lastNote, keyboardShortcuts }
-}
-
 const getInitialState = () => {
   return {
     keyboard: 'colemak',
     noteCount: 17,
-    fromNote: 'c1'
+    fromNote: 'c1',
   }
 }
 
-const deriveProps = ({keyboard, noteCount, fromNote}) => {
+const deriveProps = ({ keyboard, noteCount, fromNote }) => {
   const firstNote = MidiNumbers.fromNote(fromNote)
   const lastNote = firstNote + noteCount
   let keyboardConfig = KeyboardShortcuts.HOME_ROW
@@ -43,7 +38,9 @@ const actions = {}
 
 const makeHook = globalHook(React, getInitialState(), actions)
 
-export const withConfig = (Component, { propName = 'config' } = {}) => props => {
+export const withConfig = (Component, { propName = 'config' } = {}) => (
+  props,
+) => {
   const [state, actions] = makeHook()
   props = {
     ...props,

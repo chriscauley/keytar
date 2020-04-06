@@ -1,3 +1,4 @@
+import { pick } from 'lodash'
 import { Pitch } from 'opensheetmusicdisplay'
 import { MidiNumbers } from 'react-piano'
 
@@ -14,6 +15,13 @@ const pitchToString = ({ fundamentalNote, accidental, octave }) => {
     (Pitch.accidentalVexflow(accidental) || '') +
     octave
   )
+}
+
+export const pitchToNote = (pitch) => {
+  const note = pick(pitch, ['fundamentalNote', 'accidental', 'octave'])
+  note.midiNumber = pitchToMidiNumber(note)
+  note.name = pitchToString(note)
+  return note
 }
 
 export const offsets = {

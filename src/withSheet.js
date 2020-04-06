@@ -1,15 +1,47 @@
 import React from 'react'
 import globalHook from '../vendor/use-global-hook'
-import { pitchToMidiNumber } from './utils'
+import { pitchToMidiNumber, pitchToNote, checkNotes } from './utils'
 
-const _globals = {}
+const dummy_cursor = {
+  next: () => {},
+  NotesUnderCursor: () => [],
+}
+
+const _globals = {
+  cursor: dummy_cursor,
+}
+
+const getCurrentNotes = () =>
+  _globals.cursor
+    .NotesUnderCursor()
+    .map((n) => n.pitch)
+    .filter(Boolean)
+    .map(pitchToNote)
+
+const tick = (store, stateDelta = {}) => {
+  const state = {
+    ...store.state,
+    ...stateDelta,
+  }
+  const targetedNotes = getCurrentNotes()
+  if (checkNotes(state.pressedNotes, targetedNotes)) {
+    _globals.cursor.next()
+  }
+  store.setState(state)
+}
 
 const actions = {
-  getCurrentNotes: () =>
-    _globals.sheet.cursor
-      .NotesUnderCursor()
-      .map((n) => n.pitch)
-      .filter(Boolean),
+  getCurrentNotes,
+  keyDown: (store, midiNumber) => {
+    const { pressedNotes } = store.state
+    pressedNotes[midiNumber] = true
+    tick(store, { pressedNotes })
+  },
+  keyUp: (store, midiNumber) => {
+    const { pressedNotes } = store.state
+    delete pressedNotes[midiNumber]
+    tick(store, { pressedNotes })
+  },
   set: (store, sheet) => {
     setTimeout(() => {
       const { cursor } = sheet
@@ -40,7 +72,7 @@ const actions = {
   },
 }
 
-const makeHook = globalHook(React, { loaded: false }, actions)
+const makeHook = globalHook(React, { loaded: false, pressedNotes: {} }, actions)
 
 export default (Component, { propName = 'sheet' } = {}) => (props) => {
   const [state, actions] = makeHook()

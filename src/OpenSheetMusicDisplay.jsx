@@ -18,7 +18,7 @@ class OpenSheetMusicDisplay extends Component {
       followCursor: true,
       disableCursor: false,
     }
-    this.osmd = new OSMD(this.divRef.current, options);
+    window.osmd = this.osmd = new OSMD(this.divRef.current, options);
     this.osmd.load(this.props.file).then(() => this.props.sheet.set(this.osmd))
   }
 
@@ -36,7 +36,7 @@ class OpenSheetMusicDisplay extends Component {
   }
 
   render() {
-    return (<div ref={this.divRef} />);
+    return (<div className="OpenSheetMusicDisplay" ref={this.divRef} />);
   }
 }
 
