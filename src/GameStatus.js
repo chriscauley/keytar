@@ -4,7 +4,8 @@ import { pitchToNote } from './utils'
 import withSheet from './withSheet'
 
 const css = {
-  wrapper: "top-0 right-0 fixed border-double border-4 border-gray-600 px-2 py-1"
+  wrapper:
+    'top-0 right-0 fixed border-double border-4 border-gray-600 px-2 py-1',
 }
 
 class GameStatus extends React.Component {

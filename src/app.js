@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter, Route } from 'react-router-dom'
 import { Piano, MidiNumbers } from 'react-piano'
 import 'react-piano/dist/styles.css'
 import OSMD from './OpenSheetMusicDisplay'
@@ -7,7 +8,7 @@ import SoundfontProvider from '../vendor/SoundfontProvider'
 
 const musicfiles = require('./musicxml.json')
 import withSheet from './withSheet'
-import { withConfig } from './config'
+import { withConfig, ConfigForm } from './config'
 import GameStatus from './GameStatus'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
@@ -90,7 +91,14 @@ class BaseApp extends React.Component {
             file={'./musicxml/' + this.state.file}
             setCursor={this.setCursor}
           />
+          <HashRouter>
+            <Route path="/config" component={ConfigForm} />
+          </HashRouter>
         </div>
+        <a
+          href="#/config"
+          className="fa fa-gear text-4xl fixed p-4 bottom-0 right-0"
+        ></a>
       </div>
     )
   }

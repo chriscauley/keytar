@@ -1,6 +1,9 @@
 import globalHook from '../vendor/use-global-hook'
 import React from 'react'
 import { KeyboardShortcuts, MidiNumbers } from 'react-piano'
+import css from './css'
+
+import Form from './Form'
 
 const getInitialState = () => {
   return {
@@ -52,3 +55,25 @@ export const withConfig = (Component, { propName = 'config' } = {}) => (
   }
   return <Component {...props} />
 }
+
+class BaseConfigForm extends React.Component {
+  render() {
+    const { outer, mask, content } = css.modal
+    const schema = {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+      },
+    }
+    return (
+      <div className={outer}>
+        <a href="#" className={mask}></a>
+        <div className={content}>
+          <Form schema={schema} />
+        </div>
+      </div>
+    )
+  }
+}
+
+export const ConfigForm = withConfig(BaseConfigForm)
