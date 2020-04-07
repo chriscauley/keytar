@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash'
 import { OpenSheetMusicDisplay as OSMD } from 'opensheetmusicdisplay';
+import styled from 'styled-components'
+
 import { pitchToMidiNumber } from './utils'
 import withSheet from './withSheet'
+
+const Wrapper = styled.div`svg + img { height: 180px }`
 
 class OpenSheetMusicDisplay extends Component {
   constructor(props) {
@@ -36,7 +40,7 @@ class OpenSheetMusicDisplay extends Component {
   }
 
   render() {
-    return (<div className="OpenSheetMusicDisplay" ref={this.divRef} />);
+    return (<Wrapper><div ref={this.divRef}></div></Wrapper>);
   }
 }
 
