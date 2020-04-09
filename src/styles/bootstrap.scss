@@ -20,3 +20,39 @@
    @apply border-red-500 mb-3;
  }
 }
+
+.btn {
+  @apply font-bold py-2 px-4 rounded;
+  &.btn-primary {
+    @apply text-white bg-blue-500;
+    &:hover { @apply bg-blue-700; }
+  }
+  &.btn-secondary {
+    @apply text-white bg-gray-500;
+    &:hover { @apply bg-gray-700; }
+  }
+  &.btn-success {
+    @apply text-white bg-green-500;
+    &:hover { @apply bg-green-700; }
+  }
+  &.btn-danger {
+    @apply text-white bg-red-500;
+    &:hover { @apply bg-red-700; }
+  }
+  &.btn-warning {
+    @apply text-black bg-yellow-500;
+    &:hover { @apply bg-yellow-700; }
+  }
+  &.btn-info {
+    @apply text-white bg-teal-500;
+    &:hover { @apply bg-teal-700; }
+  }
+  &.btn-light {
+    @apply text-black bg-gray-100;
+    &:hover { @apply bg-gray-300; }
+  }
+  &.btn-dark {
+    @apply text-white bg-gray-800;
+    &:hover { @apply bg-gray-900; }
+  }
+}

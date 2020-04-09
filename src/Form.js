@@ -74,7 +74,7 @@ export default class Form extends React.Component {
                 </div>
               )}
               <button
-                className={css.button[this.isValid() ? 'default' : 'disabled']}
+                className={css.button({disabled: !this.isValid()})}
               >
                 {submitText}
               </button>

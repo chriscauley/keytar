@@ -1,8 +1,11 @@
 import CSS from './CSS'
 
+const variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']
+const _variants = {}
+variants.forEach(variant => _variants[variant] = `btn btn-${variant}`)
+
 export default CSS({
-  __base: "text-white font-bold py-2 px-4 rounded",
+  __base: "btn",
   __default: "primary",
-  primary: "bg-blue-500 hover:bg-blue-700",
-  danger: "bg-red-500 hover:bg-red-700",
+  ..._variants,
 })
