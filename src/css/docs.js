@@ -4,12 +4,12 @@ import css from './index'
 import variants from './variants'
 
 const ButtonShowCase = () => {
-  const wrapper_class = "p-2"
+  const wrapper_class = 'p-2'
   return (
     <div>
       <div className={css.h3}>Default Buttons</div>
       <div className="flex flex-wrap">
-        {variants.map(variant => (
+        {variants.map((variant) => (
           <div className={wrapper_class} key={variant}>
             <button className={css.button[variant]()}>{variant}</button>
           </div>
@@ -18,9 +18,11 @@ const ButtonShowCase = () => {
       <hr className="my-4" />
       <div className={css.h3}>Disabled Buttons</div>
       <div className="flex flex-wrap">
-        {variants.map(variant => (
+        {variants.map((variant) => (
           <div className={wrapper_class} key={variant}>
-            <button className={css.button[variant]('disabled')}>{variant}</button>
+            <button className={css.button[variant]('disabled')}>
+              {variant}
+            </button>
           </div>
         ))}
       </div>
@@ -32,8 +34,8 @@ const AlertShowCase = () => {
   return (
     <div>
       <div className={css.h3}>Alerts</div>
-      {variants.map(variant => (
-        <div className={css.alert[variant]('mb-4')}>
+      {variants.map((variant) => (
+        <div className={css.alert[variant]('mb-4')} key={variant}>
           This is an alert with variant <b>{variant}</b>
         </div>
       ))}

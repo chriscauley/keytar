@@ -37,16 +37,17 @@ export default class Form extends React.Component {
 
   render() {
     const {
+      after,
       cancel,
       cancelText = 'Cancel',
       children,
       customButton,
       className,
-      title,
+      initial,
       schema,
       submitText = 'Submit',
       success,
-      after,
+      title,
     } = this.props
     const error = this.state.error || this.props.error
     const loading = this.state.loading || this.props.loading
@@ -56,6 +57,7 @@ export default class Form extends React.Component {
       >
         {title && <div className={css.h2}>{title}</div>}
         <RJSForm
+          formData={this.state.formData || initial}
           onSubmit={this.onSubmit}
           schema={schema}
           uiSchema={{
@@ -73,9 +75,7 @@ export default class Form extends React.Component {
                   {cancelText}
                 </div>
               )}
-              <button
-                className={css.button({disabled: !this.isValid()})}
-              >
+              <button className={css.button({ disabled: !this.isValid() })}>
                 {submitText}
               </button>
             </div>

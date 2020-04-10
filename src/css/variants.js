@@ -6,12 +6,12 @@ const variants = [
   'warning',
   'info',
   'light',
-  'dark'
+  'dark',
 ]
 
-variants.toMap = f => {
+variants.toMap = (f) => {
   const result = {}
-  variants.map(variant => result[variant] = f(variant))
+  variants.map((variant) => (result[variant] = f(variant)))
   return result
 }
 
