@@ -10,6 +10,7 @@ const musicfiles = require('./musicxml.json')
 import withSheet from './withSheet'
 import { withConfig, ConfigForm } from './config'
 import GameStatus from './GameStatus'
+import CSSDocs from './css/docs'
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net'
@@ -93,12 +94,13 @@ class BaseApp extends React.Component {
           />
           <HashRouter>
             <Route path="/config" component={ConfigForm} />
+            <Route path="/docs/css" component={CSSDocs} />
           </HashRouter>
         </div>
-        <a
-          href="#/config"
-          className="fa fa-gear text-4xl fixed p-4 bottom-0 right-0"
-        ></a>
+        <div className="fixed bottom-0 right-0 text-4xl">
+          <a href="#/docs/css" className="fa fa-paint-brush p-4"></a>
+          <a href="#/config" className="fa fa-gear p-4"></a>
+        </div>
       </div>
     )
   }

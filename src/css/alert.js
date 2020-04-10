@@ -1,6 +1,8 @@
-const base = 'p-4 mb-4 '
-const alert = { toString: () => base }
-alert.error = alert + 'text-red '
-alert.success = alert + 'bg-green text-white '
+import CSS from './CSS'
+import variants from "./variants"
 
-export default alert
+export default CSS({
+  __base: "alert",
+  __default: "primary",
+  ...variants.toMap(variant => `alert-${variant}`)
+})
