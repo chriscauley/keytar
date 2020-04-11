@@ -4,5 +4,11 @@ var fs = require('fs')
 const musicdir = './static/musicxml'
 const manifest = './src/musicxml.json'
 
-const files = fs.readdirSync(musicdir);
+const filenames = fs.readdirSync(musicdir);
+const files = filenames.map(filename => {
+  return ({
+    filename,
+    title: filename.replace(/-_/g,'').replace(/.xml$/,'')
+  })
+})
 fs.writeFileSync(manifest, JSON.stringify(files))
