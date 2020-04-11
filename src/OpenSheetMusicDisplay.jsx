@@ -16,7 +16,6 @@ class OpenSheetMusicDisplay extends Component {
     this.divRef = React.createRef();
   }
   setupOsmd() {
-    console.log(this.props.file)
     const options = {
       autoResize: true,
       drawTitle: true,
