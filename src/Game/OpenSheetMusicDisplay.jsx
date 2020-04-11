@@ -3,8 +3,8 @@ import { debounce } from 'lodash'
 import { OpenSheetMusicDisplay as OSMD } from 'opensheetmusicdisplay';
 import styled from 'styled-components'
 
-import { pitchToMidiNumber } from './utils'
-import withSheet from './withSheet'
+import { pitchToMidiNumber } from '../utils'
+import withSheet from '../withSheet'
 
 const Wrapper = styled.div`svg + img { height: 180px }`
 

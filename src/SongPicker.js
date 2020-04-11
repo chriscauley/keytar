@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const musicfiles = require('./musicxml.json')
 
-export function SongPicker() {
+export default function SongPicker() {
   return (
     <div>
       {musicfiles.map(({ title, filename }) => (

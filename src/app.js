@@ -7,7 +7,7 @@ import SongPicker from './SongPicker'
 const musicfiles = require('./musicxml.json')
 import withSheet from './withSheet'
 import { ConfigForm } from './config'
-import GameBoard from './GameBoard'
+import Game from './Game'
 import CSSDocs from './css/docs'
 
 const _chain = (f1, f2) => (a) => {
@@ -28,7 +28,7 @@ class BaseApp extends React.Component {
         <div className="container mx-auto">
           <BrowserRouter>
             <Route exact path="/" component={SongPicker} />
-            <Route path="/play/:filename" component={GameBoard} />
+            <Route path="/play/:filename" component={Game} />
             <div className="fixed bottom-0 right-0 text-4xl">
               <Link to="/" className="fa fa-home p-4"></Link>
               <a href="#/docs/css" className="fa fa-paint-brush p-4"></a>

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { pitchToNote } from './utils'
-import withSheet from './withSheet'
+import { pitchToNote } from '../utils'
+import withSheet from '../withSheet'
 
 const css = {
   wrapper:
