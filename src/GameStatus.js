@@ -5,7 +5,7 @@ import withSheet from './withSheet'
 
 const css = {
   wrapper:
-    'top-0 right-0 fixed border-double border-4 border-gray-600 px-2 py-1',
+    'top-0 right-0 fixed border-double bg-white border-4 border-gray-600 px-2 py-1 z-10',
 }
 
 class GameStatus extends React.Component {
