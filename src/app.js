@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter, Route } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Route, Link } from 'react-router-dom'
 import { Piano, MidiNumbers } from 'react-piano'
 import 'react-piano/dist/styles.css'
 import OSMD from './OpenSheetMusicDisplay'
 import SoundfontProvider from '../vendor/SoundfontProvider'
 
+import SongPicker from './SongPicker'
 const musicfiles = require('./musicxml.json')
 import withSheet from './withSheet'
 import { withConfig, ConfigForm } from './config'
@@ -22,6 +23,7 @@ const _chain = (f1, f2) => (a) => {
 
 const MyPiano = withSheet(
   withConfig((props) => {
+    // # TODO activeNotes got unplugged
     const { activeNotes, config, sheet } = props
     const { keyUp, keyDown } = sheet
     const { firstNote, lastNote, keyboardShortcuts } = config
@@ -35,6 +37,9 @@ const MyPiano = withSheet(
     return (
       <div style={{ width, height }}>
         <SoundfontProvider
+          TODO={
+            'this is inefficient because it reloads 2.5MB sound file every navigation'
+          }
           instrumentName="acoustic_grand_piano"
           audioContext={audioContext}
           hostname={soundfontHostname}
@@ -59,6 +64,17 @@ const MyPiano = withSheet(
   }),
 )
 
+const GameBoard = (props) => {
+  const { filename } = props.match.params
+  return (
+    <div>
+      <GameStatus />
+      <MyPiano />
+      <OSMD file={'/musicxml/' + filename} />
+    </div>
+  )
+}
+
 class BaseApp extends React.Component {
   constructor(props) {
     super(props)
@@ -66,40 +82,23 @@ class BaseApp extends React.Component {
     this.state = { file: musicfiles[1], pressedNotes: {} }
   }
 
-  handleChange = (event) => {
-    const file = event.target.value
-    this.setState({ file })
-  }
-
   render() {
     return (
       <div className="App">
-        <GameStatus />
         <div className="container mx-auto">
-          <select onChange={this.handleChange} value={this.state.file}>
-            {musicfiles.map((f) => (
-              <option value={f} key={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-          <MyPiano
-            keyDown={this.keyDown}
-            keyUp={this.keyUp}
-            activeNotes={this.state.activeNotes}
-          />
-          <OSMD
-            file={'./musicxml/' + this.state.file}
-            setCursor={this.setCursor}
-          />
+          <BrowserRouter>
+            <Route exact path="/" component={SongPicker} />
+            <Route path="/play/:filename" component={GameBoard} />
+            <div className="fixed bottom-0 right-0 text-4xl">
+              <Link to="/" className="fa fa-home p-4"></Link>
+              <a href="#/docs/css" className="fa fa-paint-brush p-4"></a>
+              <a href="#/config" className="fa fa-gear p-4"></a>
+            </div>
+          </BrowserRouter>
           <HashRouter>
             <Route path="/config" component={ConfigForm} />
             <Route path="/docs/css" component={CSSDocs} />
           </HashRouter>
-        </div>
-        <div className="fixed bottom-0 right-0 text-4xl">
-          <a href="#/docs/css" className="fa fa-paint-brush p-4"></a>
-          <a href="#/config" className="fa fa-gear p-4"></a>
         </div>
       </div>
     )

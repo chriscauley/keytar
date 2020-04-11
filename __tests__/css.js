@@ -1,6 +1,6 @@
 import CSS from '../src/css/CSS'
 
-const qna = (a, ...tests) =>  tests.forEach((q) => expect(a).toBe(q))
+const qna = (a, ...tests) => tests.forEach((q) => expect(a).toBe(q))
 
 test('CSS', () => {
   const btn = CSS({

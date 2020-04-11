@@ -9,7 +9,7 @@ const variants = [
   'dark',
 ]
 
-variants.toMap = (f) => {
+variants.make = (f) => {
   const result = {}
   variants.map((variant) => (result[variant] = f(variant)))
   return result
