@@ -15,7 +15,7 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "eslint-plugin-react": "^7.19.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "opensheetmusicdisplay": "^0.7.3",
     "parcel": "^1.12.4",
     "postcss-modules": "^1.5.0",
